@@ -13,8 +13,8 @@ file should be in the following format:
   "client_secret":"your_client_secret",
   "callback_url":"your_callback_url",
   "scopes":[
-	 "sample_scope_1.v1",
-	 "sample_scope_2.v1"
+    "sample_scope_1.v1",
+    "sample_scope_2.v1"
   ]
 }
 ```
