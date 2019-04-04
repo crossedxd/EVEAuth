@@ -15,11 +15,14 @@ class Auth:
     file should be in the following format:
 
     {
-        'client_id': <client_id>,
-        'client_secret': <client_secret>,
-        'callback_url': <callback_url>,
-        'scopes': [<scopes>, ...]
-    }
+      "client_id":"your_client_id",
+      "client_secret":"your_client_secret",
+      "callback_url":"your_callback_url",
+      "scopes":[
+         "sample_scope_1.v1",
+         "sample_scope_2.v1"
+      ]
+   }
 
     Usage:
     auth = Auth()  # Initializes the Auth object
