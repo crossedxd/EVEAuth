@@ -19,15 +19,16 @@ class Auth:
       "client_secret":"your_client_secret",
       "callback_url":"your_callback_url",
       "scopes":[
-         "sample_scope_1.v1",
-         "sample_scope_2.v1"
+        "sample_scope_1.v1",
+        "sample_scope_2.v1"
       ]
-   }
+    }
 
     Usage:
-    auth = Auth()  # Initializes the Auth object
-    auth.session()  # The first session() will trigger authorize() to be called
-    auth.session()  # Subsequent calls will reuse the same Session() object
+    import requests
+    from eveauth import Auth
+
+    session = Auth().session()
     '''
 
     def __init__(self, filepath='auth_config.json'):
