@@ -38,10 +38,10 @@ class Auth:
         self.client_id = config['client_id']
         self.client_secret = config['client_secret']
         self.callback_url = config['callback_url']
-        self.scopes = config['scopes']
+        self.scopes = '+'.join(config['scopes']) + '+'
         self.token = base64.b64encode(bytes('{}:{}'.format(self.client_id,
                                                            self.client_secret),
-                                            'utf-8'))
+                                            'utf-8')).decode('utf-8')
         self._session = None
 
     def session(self):
@@ -56,10 +56,10 @@ class Auth:
         url += '&client_id=' + self.client_id
         url += '&redirect_uri=' + self.callback_url
         url += '&scope=' + self.scopes
-        webbrowser.open(sso_url[0:-1])
+        webbrowser.open(url[0:-1])
         auth_input = input('Login via SSO and paste the Auth code URL here:\n')
         auth_code = auth_input.split(self.callback_url + '/?code=')[1]
-        authorization = 'Basic ' + self.token
+        authorization = 'Basic {}'.format(self.token)
         response = requests.post('https://login.eveonline.com/oauth/token',
                                  headers={'Authorization': authorization},
                                  data={'grant_type': 'authorization_code',
