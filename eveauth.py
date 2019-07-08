@@ -3,26 +3,32 @@ import json
 import webbrowser
 
 import requests
+import wx
 
 
 class Auth:
     '''
-    Authenticate via EVE Online's sign-in service and establish a session
-    using a given config file, or the default config file if none is specified.
+    Authenticate via EVE Online's sign-in service and establish a session using
+    a given config file, or the default config file if none is specified.
 
     The accompanying config file should be a JSON file containing the settings
     from the EVE Online Developers application registration page.  The config
-    file should be in the following format:
+    file (auth_config.json) should be in the following format:
 
     {
-      "client_id":"your_client_id",
-      "client_secret":"your_client_secret",
-      "callback_url":"your_callback_url",
-      "scopes":[
+      "client_id": "your_client_id",
+      "client_secret": "your_client_secret",
+      "callback_url": "your_callback_url",
+      "prompt_type": "modal",
+      "scopes": [
         "sample_scope_1.v1",
         "sample_scope_2.v1"
       ]
     }
+
+    Valid prompt types are:
+    "modal": a wx.TextEntryDialog() popup window
+    "input": command line input()
 
     Usage:
     import requests
@@ -33,13 +39,14 @@ class Auth:
 
     def __init__(self, filepath='auth_config.json'):
         '''Initializes an Auth object with information from a config file.'''
-        with open(filepath, 'r') as f:
-            config = json.loads(f.read())
+        with open(filepath, 'r') as config_file:
+            config = json.loads(config_file.read())
 
         self.client_id = config['client_id']
         self.client_secret = config['client_secret']
         self.callback_url = config['callback_url']
         self.scopes = '+'.join(config['scopes']) + '+'
+        self.prompt_type = config['prompt_type']
         self.token = base64.b64encode(bytes('{}:{}'.format(self.client_id,
                                                            self.client_secret),
                                             'utf-8')).decode('utf-8')
@@ -58,7 +65,18 @@ class Auth:
         url += '&redirect_uri=' + self.callback_url
         url += '&scope=' + self.scopes
         webbrowser.open(url[0:-1])
-        auth_input = input('Login via SSO and paste the Auth code URL here:\n')
+        auth_input = None
+        if self.prompt_type == 'modal':
+            dlg = wx.TextEntryDialog(
+                None,
+                'Login via SSO and paste the Auth code URL here:',
+                'Input Auth URL')
+            dlg.SetValue('')
+            if dlg.ShowModal() == wx.ID_OK:
+                auth_input = dlg.GetValue()
+        elif self.prompt_type == 'input':
+            auth_input = input(
+                'Login via SSO and paste the Auth code URL here:\n')
         auth_code = auth_input.split(self.callback_url + '/?code=')[1]
         authorization = 'Basic {}'.format(self.token)
         response = requests.post('https://login.eveonline.com/oauth/token',
@@ -67,5 +85,5 @@ class Auth:
                                        'code': auth_code})
         token = response.json()
         self._session = requests.Session()
-        self._session.headers.update({'Authorization': 'Bearer ' +
-                                      token['access_token']})
+        self._session.headers.update(
+            {'Authorization': 'Bearer ' + token['access_token']})
