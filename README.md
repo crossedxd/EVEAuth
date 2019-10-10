@@ -21,8 +21,8 @@ file (auth_config.json) should be in the following format:
 ```
 
 Valid prompt types are:
-"modal": a wx.TextEntryDialog() popup window
-"input": command line input()
+* "modal" - a wx.TextEntryDialog() popup window
+* "input" - command line input()
 
 Usage:
 ```
