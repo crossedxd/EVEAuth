@@ -27,8 +27,8 @@ class Auth:
     }
 
     Valid prompt types are:
-    "modal": a wx.TextEntryDialog() popup window
-    "input": command line input()
+    * "modal" - a wx.TextEntryDialog() popup window
+    * "input" - command line input()
 
     Usage:
     import requests
