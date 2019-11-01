@@ -12,7 +12,7 @@ file (auth_config.json) should be in the following format:
   "client_id": "your_client_id",
   "client_secret": "your_client_secret",
   "callback_url": "your_callback_url",
-  "prompt_type": "modal",
+  "prompt_type": "input",
   "scopes": [
     "sample_scope_1.v1",
     "sample_scope_2.v1"
@@ -21,8 +21,8 @@ file (auth_config.json) should be in the following format:
 ```
 
 Valid prompt types are:
-* "modal" - a wx.TextEntryDialog() popup window
 * "input" - command line input()
+* "modal" - a wxPython TextEntryDialog() popup window
 
 Usage:
 ```
