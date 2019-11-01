@@ -3,7 +3,6 @@ import json
 import webbrowser
 
 import requests
-import wx
 
 
 class Auth:
@@ -16,19 +15,19 @@ class Auth:
     file (auth_config.json) should be in the following format:
 
     {
-      "client_id": "your_client_id",
-      "client_secret": "your_client_secret",
-      "callback_url": "your_callback_url",
-      "prompt_type": "modal",
-      "scopes": [
-        "sample_scope_1.v1",
-        "sample_scope_2.v1"
-      ]
+        "client_id": "your_client_id",
+        "client_secret": "your_client_secret",
+        "callback_url": "your_callback_url",
+        "prompt_type": "input",
+        "scopes": [
+            "sample_scope_1.v1",
+            "sample_scope_2.v1"
+        ]
     }
 
     Valid prompt types are:
-    * "modal" - a wx.TextEntryDialog() popup window
     * "input" - command line input()
+    * "modal" - a wxPython TextEntryDialog() popup window
 
     Usage:
     import requests
@@ -67,6 +66,7 @@ class Auth:
         webbrowser.open(url[0:-1])
         auth_input = None
         if self.prompt_type == 'modal':
+            import wx
             dlg = wx.TextEntryDialog(
                 None,
                 'Login via SSO and paste the Auth code URL here:',

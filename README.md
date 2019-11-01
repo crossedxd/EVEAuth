@@ -1,5 +1,7 @@
 # EVEAuth
 
+*Note: the "modal" option requires [wxPython](https://pypi.org/project/wxPython/) in order to work.*
+
 Authenticate via EVE Online's sign-in service and establish a session using
 a given config file, or the default config file if none is specified.
 
